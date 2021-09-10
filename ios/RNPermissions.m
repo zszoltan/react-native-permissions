@@ -58,6 +58,9 @@
 #if __has_include("RNPermissionHandlerLocationAccuracy.h")
 #import "RNPermissionHandlerLocationAccuracy.h"
 #endif
+#if __has_include("RNPermissionHandlerLocalNetwork.h")
+#import "RNPermissionHandlerLocalNetwork.h"
+#endif
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
@@ -114,6 +117,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
   [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionPhotoLibraryAddOnly),
+#endif
+#if __has_include("RNPermissionHandlerLocalNetwork.h")
+  [RNPermissionHandlerLocalNetwork handlerUniqueId]: @(RNPermissionLocalNetwork),
 #endif
 }), RNPermissionUnknown, integerValue);
 
@@ -196,6 +202,9 @@ RCT_EXPORT_MODULE();
 #endif
 #if __has_include("RNPermissionHandlerLocationAccuracy.h")
   [available addObject:[RNPermissionHandlerLocationAccuracy handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerLocalNetwork.h")
+  [available addObject:[RNPermissionHandlerLocalNetwork handlerUniqueId]];
 #endif
 
 #if RCT_DEV
@@ -312,6 +321,11 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
     case RNPermissionPhotoLibraryAddOnly:
       handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
+      break;
+#endif
+#if __has_include("RNPermissionHandlerLocalNetwork.h")
+    case RNPermissionLocalNetwork:
+      handler = [RNPermissionHandlerLocalNetwork new];
       break;
 #endif
     case RNPermissionUnknown:
