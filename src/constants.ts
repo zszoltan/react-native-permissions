@@ -37,6 +37,7 @@ export const IOS = Object.freeze({
   CAMERA: 'ios.permission.CAMERA' as const,
   CONTACTS: 'ios.permission.CONTACTS' as const,
   FACE_ID: 'ios.permission.FACE_ID' as const,
+  LOCAL_NETWORK: 'ios.permission.LOCAL_NETWORK' as const,
   LOCATION_ALWAYS: 'ios.permission.LOCATION_ALWAYS' as const,
   LOCATION_WHEN_IN_USE: 'ios.permission.LOCATION_WHEN_IN_USE' as const,
   MEDIA_LIBRARY: 'ios.permission.MEDIA_LIBRARY' as const,

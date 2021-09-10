@@ -51,6 +51,9 @@ typedef NS_ENUM(NSInteger, RNPermission) {
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
   RNPermissionAppTrackingTransparency = 16,
 #endif
+#if __has_include("RNPermissionHandlerLocalNetwork.h")
+    RNPermissionLocalNetwork = 17,
+#endif
 };
 
 @interface RCTConvert (RNPermission)
