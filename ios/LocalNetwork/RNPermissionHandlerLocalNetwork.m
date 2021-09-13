@@ -63,7 +63,6 @@
 -(void)resolvePromise:(RNPermissionStatus) status {
     [self cleanup];
     if(self->_resolve !=nil){
-        NSLog(@"-------------------------------------------local network--- resolvePromise");
         self->_resolve(status);
         self->_resolve = nil;
     }
