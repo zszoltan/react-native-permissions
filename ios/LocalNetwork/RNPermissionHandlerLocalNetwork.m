@@ -27,7 +27,7 @@
             self->browseRef = nil;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            self->timer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+            self->timer = [NSTimer scheduledTimerWithTimeInterval: 300.0
                                                            target: self
                                                          selector:@selector(onTimeOut:)                                                    userInfo: nil
                                                           repeats:NO];
@@ -42,7 +42,6 @@
             error = DNSServiceSetDispatchQueue(self->browseRef, dispatch_get_main_queue());
             if (error != kDNSServiceErr_NoError)
             {
-                
                 NSLog(@"ERROR DNSServiceSetDispatchQueue error code: %d", error);
                 [self resolvePromise:RNPermissionStatusNotDetermined];
                 return;
@@ -53,8 +52,6 @@
     }
   
 }
-
-
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
                       [self checkWithResolver:resolve rejecter:reject]; 
@@ -68,8 +65,7 @@
     }
 }
 -(void)onTimeOut:(NSTimer *)timer {
-    [self cleanup];
-    [self resolvePromise:RNPermissionStatusAuthorized];
+    [self resolvePromise:RNPermissionStatusNotDetermined];
 }
 -(void)cleanup {
     if(self->timer){
@@ -85,11 +81,27 @@
 static void browseCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,
                            DNSServiceErrorType errorCode, const char *serviceName,
                            const char *regtype, const char *replyDomain, void *context) {
+    if (errorCode == kDNSServiceErr_NoError) {
+        if(context!=nil){
+            RNPermissionHandlerLocalNetwork* this = (__bridge RNPermissionHandlerLocalNetwork *)(context);
+            [this resolvePromise:RNPermissionStatusAuthorized];
+        }
+    }
+    else {
+    
     if (errorCode == kDNSServiceErr_PolicyDenied) {
         if(context!=nil){
             RNPermissionHandlerLocalNetwork* this = (__bridge RNPermissionHandlerLocalNetwork *)(context);
             [this resolvePromise:RNPermissionStatusDenied];
         }
     }
+    else{
+        if(context!=nil){
+            RNPermissionHandlerLocalNetwork* this = (__bridge RNPermissionHandlerLocalNetwork *)(context);
+            [this resolvePromise:RNPermissionStatusNotAvailable];
+        }
+            }
+    }
+
 }
 @end
